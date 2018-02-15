@@ -13,27 +13,27 @@ import com.carledwinj.geradorTokenJWT.model.Usuario;
 import com.carledwinj.geradorTokenJWT.service.UsuarioService;
 
 @RestController
-public class TokenRestController {
+public class UsuarioRestController {
 
 	@Autowired
 	private UsuarioService usuarioService;
 	
 
-	@PostMapping(value="/token")
+	@PostMapping(value="/usuario")
 	public ResponseEntity<?> getToken(@RequestBody Usuario usuario) {
-		
-		String token = null;
 		
 		if(usuario != null && StringUtils.isNotBlank(usuario.getLogin()) && StringUtils.isNotBlank(usuario.getPassword())) {
 			
-			if(StringUtils.isNotBlank(usuarioService.geraTokenUsuario(usuario))) {
-				return new ResponseEntity<String>("Token >>>  [Bearer " + token +"]", HttpStatus.CREATED);
+			Usuario usuarioDB = usuarioService.cadastraUsuario(usuario);
+			
+			if(usuarioDB != null) {
+				return new ResponseEntity<String>(usuario.toString(), HttpStatus.CREATED);
 			}
 			
 		}else {
 			return new ResponseEntity<Erro>(new Erro("Login e Password são de preenchimento obrigatório."), HttpStatus.BAD_REQUEST);
 		}
 		
-		return new ResponseEntity<Erro>(new Erro("Falha ao tentar gerar token."), HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<Erro>(new Erro("Falha ao tentar criar usuário."), HttpStatus.BAD_REQUEST);
 	}
 }

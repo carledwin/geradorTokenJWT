@@ -4,6 +4,7 @@ import java.util.Date;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.carledwinj.geradorTokenJWT.model.Usuario;
@@ -56,6 +57,20 @@ public class UsuarioService {
 		}
 
 		return usuarioDB;
+	}
+
+	public Usuario cadastraUsuario(Usuario usuario) {
+		
+		usuario.setPassword(criptografaPassword(usuario.getPassword()));
+		
+		return usuarioRepository.save(usuario);
+	}
+
+	private String criptografaPassword(String password) {
+		
+		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+		
+		return encoder.encode(password);
 	}
 
 }
