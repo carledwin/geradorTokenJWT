@@ -1,18 +1,13 @@
 package com.carledwinj.geradorTokenJWT.service;
 
-import java.util.Date;
-
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.carledwinj.geradorTokenJWT.model.Usuario;
 import com.carledwinj.geradorTokenJWT.repository.UsuarioRepository;
 import com.carledwinj.geradorTokenJWT.util.GeneratorPasswordUtil;
-
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import com.carledwinj.geradorTokenJWT.util.GeradorTokenUtil;
 
 @Service
 public class UsuarioService {
@@ -26,23 +21,10 @@ public class UsuarioService {
 			
 			Usuario usuarioDB = consultaUsuarioBaseDados(usuario);
 			
-			return geraToken(usuarioDB);
+			return GeradorTokenUtil.geraToken(usuarioDB);
 		}
 		
 		throw new RuntimeException("Dados inválidos"); 
-	}
-
-	private String geraToken(Usuario usuarioDB) {
-		
-		 String token = Jwts
-				.builder()
-				.setSubject(usuarioDB.getLogin())
-				.claim("roles", "user")
-				.setIssuedAt(new Date())
-				.signWith(SignatureAlgorithm.HS256, "secretkey")
-				.compact();
-		 
-		return token;
 	}
 
 	private boolean isUserValido(Usuario usuario) {
