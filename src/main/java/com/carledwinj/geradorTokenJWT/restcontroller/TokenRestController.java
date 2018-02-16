@@ -26,7 +26,8 @@ public class TokenRestController {
 		
 		if(usuario != null && StringUtils.isNotBlank(usuario.getLogin()) && StringUtils.isNotBlank(usuario.getPassword())) {
 			
-			if(StringUtils.isNotBlank(usuarioService.geraTokenUsuario(usuario))) {
+			token = usuarioService.geraTokenUsuario(usuario);
+			if(StringUtils.isNotBlank(token)) {
 				return new ResponseEntity<String>("Token >>>  [Bearer " + token +"]", HttpStatus.CREATED);
 			}
 			

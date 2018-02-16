@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.carledwinj.geradorTokenJWT.model.Usuario;
 import com.carledwinj.geradorTokenJWT.repository.UsuarioRepository;
+import com.carledwinj.geradorTokenJWT.util.GeneratorPasswordUtil;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -49,7 +50,9 @@ public class UsuarioService {
 	}
 	
 	private Usuario consultaUsuarioBaseDados(Usuario usuario) {
-
+		
+		usuario.setPassword(GeneratorPasswordUtil.generateHash(usuario.getPassword()));
+		
 		Usuario usuarioDB = usuarioRepository.findByLoginAndPassword(usuario.getLogin(), usuario.getPassword());
 
 		if (usuarioDB == null) {
@@ -61,16 +64,9 @@ public class UsuarioService {
 
 	public Usuario cadastraUsuario(Usuario usuario) {
 		
-		usuario.setPassword(criptografaPassword(usuario.getPassword()));
+		usuario.setPassword(GeneratorPasswordUtil.generateHash(usuario.getPassword()));
 		
 		return usuarioRepository.save(usuario);
-	}
-
-	private String criptografaPassword(String password) {
-		
-		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-		
-		return encoder.encode(password);
 	}
 
 }

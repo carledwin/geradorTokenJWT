@@ -1,0 +1,26 @@
+
+Gerar token
+request
+POST http://localhost:8080/token
+
+Header
+Authorization: Basic Y2FybDpzZW5oYTEyMw== (carl / senha123)
+Content-Type: application/json
+
+Body
+{"login":"novoUsuario2", "password":"aaa123"}
+
+Cadastrar usuario
+request
+POST http://localhost:8080/usuario
+
+Header
+Authorization: Basic Y2FybDpzZW5oYTEyMw==
+Content-Type: application/json
+
+Body
+{"login":"novoUsuario2", "password":"aaa123"}
+
+Token >>>  [
+	Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJub3ZvVXN1YXJpbzIiLCJyb2xlcyI6InVzZXIiLCJpYXQiOjE1MTg3OTIwMjR9.w9_I3drCF3oH8-1No3qFNtI4tNUZUxmoFt1Q6rB5_3k
+	]
